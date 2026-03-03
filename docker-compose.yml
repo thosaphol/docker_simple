@@ -1,0 +1,35 @@
+services:
+  sample-server:  # service name
+    container_name: sample-server # container name
+    build: . # path of dockerfile
+    ports:
+      - "8000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    container_name: db
+    image: mysql:8.0.32
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tutorial
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 5
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOST: db #db service สำหรับให้ phpmyadmin เชื่อมต่อกับ db service
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8080:80" 
+    depends_on:
+      - db
