@@ -16,3 +16,8 @@ alpine => lightweight image
 
 # logging
 - docker logs <container-name/container-id>
+
+# Docker Compose
+- docker-compose up -d --build  
+  -d => run background, --build => build ใหม่ทุกครั้ง
+- docker-compose down  => down container ที่กำลัง run จาก docker-compose file ลง 
